@@ -1,5 +1,6 @@
 const express = require("express");
 const routes = express.Router();
+const authRouter = require("./auth");
 
 routes.get("/", (req, res) => {
     try {
@@ -8,6 +9,8 @@ routes.get("/", (req, res) => {
         res.json({ error: "API Error" });
     }
 })
+
+routes.use("/auth", authRouter);
 
 routes.all("/*", (req, res) => {
     try {
