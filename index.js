@@ -2,6 +2,7 @@ const express = require("express");
 const app = express();
 const bodyparser = require("body-parser");
 const PORT = 3000;
+const routes = require("./routes/index");
 
 try {
     app.listen(PORT, () => {
@@ -12,11 +13,6 @@ try {
     console.log("Server error", error)
 }
 
-
-app.get("/", (req, res) => {
-    try {
-        res.json("HOMEPAGE");
-    } catch (error) {
-        res.json({ error: "API Error" });
-    }
-})
+app.set("view engine",'pug');
+app.use(bodyparser.json());
+app.use(routes);
