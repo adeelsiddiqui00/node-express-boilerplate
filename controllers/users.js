@@ -1,4 +1,6 @@
 const User = require("../models/users");
+const jwt = require("jsonwebtoken");
+const env = process.env;
 
 const signup = async (req, res) => {
     try {
@@ -33,7 +35,8 @@ const login = async (req, res) => {
         let { email, password } = req.body;
 
         if (!email && !password) {
-            throw new Error("Data not provided");
+            res.json({ error: "Data not provided" });
+            return;
         }
 
         email = email.toLowerCase();
@@ -41,14 +44,18 @@ const login = async (req, res) => {
         const userCheck = await User.findOne({ email }).lean().exec();
 
         if (!userCheck) {
-            throw new Error("User not exist");
+            res.json({ error: "User not exist" });
+            return;
         }
 
         if (userCheck && (String(userCheck.password) !== String(password))) {
-            throw new Error("Password not matched");
+            res.json({ error: "Password not matched" });
+            return;
         }
 
-        res.json("Successfully Logged in")
+        const token = jwt.sign(userCheck, env.JWT_SECRET_KEY);
+
+        res.json({userCheck, token});
 
 
     } catch (error) {

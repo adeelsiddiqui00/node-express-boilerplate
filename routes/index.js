@@ -1,6 +1,6 @@
 const express = require("express");
 const routes = express.Router();
-const authRouter = require("./auth");
+const usersRouter = require("./users");
 
 routes.get("/", (req, res) => {
     try {
@@ -10,7 +10,7 @@ routes.get("/", (req, res) => {
     }
 })
 
-routes.use("/auth", authRouter);
+routes.use("/users", usersRouter);
 
 routes.all("/*", (req, res) => {
     try {
